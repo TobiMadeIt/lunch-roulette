@@ -67,7 +67,6 @@ PlaceView.propTypes = {
   getNextPlace: PropTypes.func.isRequired,
   gettingNextPlace: PropTypes.bool.isRequired,
   handleLunchClick: PropTypes.func.isRequired,
-
 };
 
 PlaceView.defaultProps = {
