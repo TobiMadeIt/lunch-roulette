@@ -1,0 +1,6 @@
+.chat-container{
+  height: 10rem;
+  width: 20rem;
+  border: 2px solid darkgray;
+  margin: 2rem;
+}
