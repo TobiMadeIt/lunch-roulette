@@ -5,7 +5,11 @@
   "dependencies": {
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
-    "react-scripts": "1.0.17"
+    "react-scripts": "1.0.17",
+    "semantic-ui-css": "^2.2.12",
+    "semantic-ui-react": "^0.77.0",
+    "twilio-chat": "^1.2.1",
+    "yelp-api-v3": "^1.5.0"
   },
   "scripts": {
     "start": "react-scripts start",

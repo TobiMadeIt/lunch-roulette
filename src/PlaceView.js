@@ -9,7 +9,7 @@ class PlaceView extends Component{
 
   render(){
     const {name, photoURL, category, tip, priceTier, distance} = this.props.venueDetails,
-      {getNextPlace, gettingNextPlace} = this.props;
+      {getNextPlace, gettingNextPlace, handleLunchClick} = this.props;
 
     return (
       <div>
@@ -45,7 +45,7 @@ class PlaceView extends Component{
           </Card.Content>
           <Card.Content extra>
             <div className="ui two buttons">
-              <Button basic color="green">Let's Lunch!</Button>
+              <Button target="_blank" onClick={handleLunchClick} basic color="green">Let's Lunch!</Button>
               <Button basic color="red" onClick={getNextPlace} disabled={gettingNextPlace}>Get Another</Button>
             </div>
           </Card.Content>
@@ -66,6 +66,7 @@ PlaceView.propTypes = {
   }),
   getNextPlace: PropTypes.func.isRequired,
   gettingNextPlace: PropTypes.bool.isRequired,
+  handleLunchClick: PropTypes.func.isRequired,
 
 };
 
