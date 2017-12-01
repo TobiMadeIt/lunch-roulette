@@ -5,8 +5,8 @@ import PizzaLogo from '../images/pizza-logo.png';
 import SavedPlaceItem from './SavedPlaceItem';
 import '../styles/App.css';
 
-const CLIENT_ID = 'WZJOUGN5SJ310OCCVVORI4GMOEJXBXO0GADFVCNQZVXSKPPR',
-  CLIENT_SECRET = 'K1UBCS4AQH2NROU3C4U0MDITXQI4EM0YNKOKRA0OQCH5MEGX',
+const CLIENT_ID = 'E35KZVRUV5YSWYBDLNFZOCEBPCOQUH44SNEZKZEWTLYTVZOA',
+  CLIENT_SECRET = 'WRIM5U3CLKN4NUN0NPZVDWNRGOE4TUSD3IRO4YI5LULGEMSJ',
   CATEGORYID = '4bf58dd8d48988d14e941735,' +
     '4bf58dd8d48988d142941735,4bf58dd8d48988d1df931735,' +
     '4bf58dd8d48988d110941735,4bf58dd8d48988d1c1941735,' +
@@ -225,6 +225,11 @@ class App extends Component {
                     }
                   </Grid.Column>
                 </Grid>
+                <div className="footer">
+                  <p>
+                    Oluwatobi Oremade - Powered by Foursquare.
+                  </p>
+                </div>
               </div>
             </Sidebar.Pusher>
           </Sidebar.Pushable>

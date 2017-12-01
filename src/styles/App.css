@@ -1,4 +1,6 @@
-
+.App{
+  padding-bottom: 5rem;
+}
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 10rem;
@@ -9,6 +11,14 @@
   text-align: center;
 }
 
+.footer{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: lightgray;
+  text-align: center;
+}
 
 .sidebar-close-toggle{
   text-align: right;
