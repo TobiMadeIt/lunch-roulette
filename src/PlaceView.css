@@ -4,3 +4,31 @@
   border: 2px solid darkgray;
   margin: 2rem;
 }
+
+.place-card{
+  height: 37rem;
+}
+.place-header{
+  float:left;
+  max-width: 70%;
+}
+
+.place-description{
+  padding-top: 0.5rem;
+  height: 6.5rem;
+  max-height: 6.5rem;
+  overflow: hidden;
+}
+
+.place-price{
+  float: right;
+}
+
+.place-category{
+  clear:left;
+  float:left;
+}
+
+.place-distance{
+  float: right;
+}

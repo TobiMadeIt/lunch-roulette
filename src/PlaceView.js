@@ -13,40 +13,46 @@ class PlaceView extends Component{
 
     return (
       <div>
-        <Card>
+        <Card className="place-card" centered>
           {/* <div style={{height:'20rem', backgroundImage: `url(${this.props.photoURL})`, backgroundSize: 'cover'}}> */}
           <div style={{height:'20rem',}}>
             <img style={{objectFit: 'cover', width:'100%', height:'100%'}} src={photoURL || RestaurantPlaceholder} alt="restaurant"/>
           </div>
           <Card.Content>
-            <Card.Header>
+            <Card.Header className="place-header">
               {name}
             </Card.Header>
-            <Card.Meta>
-              <span className="restaurant-category">
-                {category}
-              </span>
-            </Card.Meta>
-            <Card.Meta>
-              <span className="price">
+            <Card.Meta className="place-price">
+              <span>
                 {
-                  [...Array(priceTier)].map((e, i) => <Icon key={i} name="dollar"/>)
+                  [...Array(priceTier)].map((e, i) => <Icon key={i} name="dollar" fitted/>)
                 }
               </span>
             </Card.Meta>
-            <Card.Meta>
-              <span className="restaurant-category">
+            <Card.Meta className="place-category">
+              <span>
+                {category}
+              </span>
+            </Card.Meta>
+            <Card.Meta className="place-distance">
+              <span>
                 {distance + ' mi'}
               </span>
             </Card.Meta>
-            <Card.Description>
+            <Card.Description className="place-description">
               {tip}
             </Card.Description>
           </Card.Content>
           <Card.Content extra>
             <div className="ui two buttons">
-              <Button target="_blank" onClick={handleLunchClick} basic color="green">Let's Lunch!</Button>
-              <Button basic color="red" onClick={getNextPlace} disabled={gettingNextPlace}>Get Another</Button>
+              <Button target="_blank" onClick={handleLunchClick} primary >
+                <Icon name="rocket"/>
+                Lunch!
+              </Button>
+              <Button color="red" onClick={getNextPlace} disabled={gettingNextPlace}>
+                <Icon name="cancel" />
+                Pass
+              </Button>
             </div>
           </Card.Content>
         </Card>
@@ -62,7 +68,7 @@ PlaceView.propTypes = {
     category: PropTypes.string,
     tip: PropTypes.string,
     priceTier: PropTypes.number,
-    distance: PropTypes.string,
+    distance: PropTypes.number,
   }),
   getNextPlace: PropTypes.func.isRequired,
   gettingNextPlace: PropTypes.bool.isRequired,

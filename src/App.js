@@ -122,7 +122,11 @@ class App extends Component {
       try {priceTier = venue.price.tier;}
       catch(e){priceTier = 0;}
 
-      try {tip = venue.tips.groups[0].items[0].text;}
+      try {
+        tip = venue.tips.groups[0].items[0].text;
+        if (tip.length > 145)
+          tip = tip.substring(0, 145) + '...';
+      }
       catch(e){tip = '';}
 
       try {distance = Math.ceil(this.state.venues[nextVenue].location.distance * 0.000621371);}
