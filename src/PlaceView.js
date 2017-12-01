@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Card, Icon, Button} from 'semantic-ui-react';
+import {Card, Icon, Button, Grid} from 'semantic-ui-react';
 import './PlaceView.css';
 import RestaurantPlaceholder from './placeholder_restaurant.png';
 
@@ -13,7 +13,7 @@ class PlaceView extends Component{
 
     return (
       <div>
-        <Card className="place-card" centered>
+        <Card className="place-card" fluid centered>
           {/* <div style={{height:'20rem', backgroundImage: `url(${this.props.photoURL})`, backgroundSize: 'cover'}}> */}
           <div style={{height:'20rem',}}>
             <img style={{objectFit: 'cover', width:'100%', height:'100%'}} src={photoURL || RestaurantPlaceholder} alt="restaurant"/>
@@ -44,16 +44,20 @@ class PlaceView extends Component{
             </Card.Description>
           </Card.Content>
           <Card.Content extra>
-            <div className="ui two buttons">
-              <Button target="_blank" onClick={handleLunchClick} primary >
-                <Icon name="rocket"/>
-                Lunch!
-              </Button>
-              <Button color="red" onClick={getNextPlace} disabled={gettingNextPlace}>
-                <Icon name="cancel" />
-                Pass
-              </Button>
-            </div>
+            <Grid columns={2}>
+              <Grid.Column>
+                <Button fluid target="_blank" onClick={handleLunchClick} primary >
+                  <Icon name="rocket"/>
+                  Lunch!
+                </Button>
+              </Grid.Column>
+              <Grid.Column>
+                <Button fluid color="red" onClick={getNextPlace} disabled={gettingNextPlace}>
+                  <Icon name="cancel" />
+                  Pass
+                </Button>
+              </Grid.Column>
+            </Grid>
           </Card.Content>
         </Card>
       </div>

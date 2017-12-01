@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { Sidebar, Card, Grid, Button, Item, Icon, Header } from 'semantic-ui-react';
 import PlaceView from './PlaceView';
+import SavedPlaceItem from './SavedPlaceItem';
+import PizzaLogo from './pizza-logo.png';
 import './App.css';
 
 const CLIENT_ID = 'WZJOUGN5SJ310OCCVVORI4GMOEJXBXO0GADFVCNQZVXSKPPR',
@@ -33,9 +36,11 @@ class App extends Component {
 
     this.state = {
       venues: [],
+      savedPlaces:[],
       currentVenueDetails: undefined,
       currentVenue: 0,
       gettingNextPlace: false,
+      sidebarVisibility: false,
     };
 
     this.loadPlaces = this.loadPlaces.bind(this);
@@ -44,10 +49,9 @@ class App extends Component {
     this.handleLocationFailure = this.handleLocationFailure.bind(this);
     this.handleLocationSuccess = this.handleLocationSuccess.bind(this);
     this.handleLunchClick = this.handleLunchClick.bind(this);
+    this.toggleSidebar = this.toggleSidebar.bind(this);
 
   }
-
-
 
   componentWillMount(){
     if (!navigator.geolocation)
@@ -66,7 +70,16 @@ class App extends Component {
   }
 
   handleLocationFailure = () => {
-    alert("Please grant location access");
+    fetch("http://ipinfo.io/json?token=2a3097ff5d6dc8")
+    .then((response) =>{
+      if (!response.ok)
+        throw Error("Couldn't get IP location");
+      else
+        return response.json();
+    })
+    .then((location) => this.loadPlaces({ll: location.loc}))
+    .catch(console.log);
+    alert("Please allow location access. Using rough location");
   }
 
 
@@ -163,25 +176,58 @@ class App extends Component {
   }
 
   handleLunchClick(){
+    const {name, photoURL} = this.state.currentVenueDetails;
+    this.setState({
+      savedPlaces: [...this.state.savedPlaces, {name, photoURL}],
+    });
     window.open('https://www.google.com/maps/dir/?api=1&destination=' +  this.state.currentVenueDetails.coordinates, '_blank');
+  }
+
+  toggleSidebar(){
+    this.setState({
+      sidebarVisibility: !this.state.sidebarVisibility,
+    });
   }
 
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img className="App-logo" alt="logo" />
-          <h1 className="App-title">Lunch Roulette</h1>
-        </header>
-        {this.state.currentVenueDetails &&
-          <PlaceView venueDetails = {this.state.currentVenueDetails}
-            getNextPlace = {this.getNextPlace}
-            handleLunchClick = {this.handleLunchClick}
-            gettingNextPlace = {this.state.gettingNextPlace}
-          />
-        }
-      </div>
+
+          <Sidebar.Pushable className="places-sidebar">
+            <Sidebar as={Card} animation="overlay" width="wide" visible={this.state.sidebarVisibility} >
+              <a className="sidebar-close-toggle" onClick={this.toggleSidebar}><Icon name="cancel" size="big" color="grey" /></a>
+              <Header textAlign="center">Saved Places</Header>
+              <Item.Group divided>
+
+                {this.state.savedPlaces.map((place, i) => <SavedPlaceItem name={place.name} photoURL={place.photoURL} key={i} /> )}
+
+              </Item.Group>
+
+            </Sidebar>
+
+            <Sidebar.Pusher>
+              <div className="App">
+                <header className="App-header">
+                  <img src={PizzaLogo} className="App-logo" alt="logo" />
+                  <h1 className="App-title">Lunch Roulette</h1>
+                  <p>It's Tinder! But for restaurants</p>
+                  <Button color="grey" onClick={this.toggleSidebar}>Saved Places</Button>
+                </header>
+                <Grid centered >
+                  <Grid.Column computer={6} tablet={8} mobile={15}>
+                    {this.state.currentVenueDetails &&
+                      <PlaceView venueDetails = {this.state.currentVenueDetails}
+                        getNextPlace = {this.getNextPlace}
+                        handleLunchClick = {this.handleLunchClick}
+                        gettingNextPlace = {this.state.gettingNextPlace}
+                      />
+                    }
+                  </Grid.Column>
+                </Grid>
+              </div>
+            </Sidebar.Pusher>
+          </Sidebar.Pushable>
+
     );
   }
 }

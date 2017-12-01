@@ -1,12 +1,6 @@
-.chat-container{
-  height: 10rem;
-  width: 20rem;
-  border: 2px solid darkgray;
-  margin: 2rem;
-}
-
 .place-card{
-  height: 37rem;
+  height: 40rem;
+  width: 100%;
 }
 .place-header{
   float:left;
