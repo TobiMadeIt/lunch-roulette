@@ -1,13 +1,14 @@
 {
-  "main.css": "static/css/main.948df329.css",
-  "main.css.map": "static/css/main.948df329.css.map",
-  "main.js": "static/js/main.37c4dfd8.js",
-  "main.js.map": "static/js/main.37c4dfd8.js.map",
+  "main.css": "static/css/main.cf65c2f0.css",
+  "main.css.map": "static/css/main.cf65c2f0.css.map",
+  "main.js": "static/js/main.3ef70c4c.js",
+  "main.js.map": "static/js/main.3ef70c4c.js.map",
   "static/media/flags.png": "static/media/flags.9c74e172.png",
   "static/media/icons.eot": "static/media/icons.674f50d2.eot",
   "static/media/icons.svg": "static/media/icons.912ec66d.svg",
   "static/media/icons.ttf": "static/media/icons.b06871f2.ttf",
   "static/media/icons.woff": "static/media/icons.fee66e71.woff",
   "static/media/icons.woff2": "static/media/icons.af7ae505.woff2",
+  "static/media/pizza-logo.png": "static/media/pizza-logo.fd7bdaa5.png",
   "static/media/placeholder_restaurant.png": "static/media/placeholder_restaurant.86d14ad8.png"
 }
