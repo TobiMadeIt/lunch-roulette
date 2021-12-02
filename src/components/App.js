@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Sidebar, Card, Grid, Button, Item, Icon, Header } from 'semantic-ui-react';
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore"; 
 import PlaceView from './PlaceView';
 import PizzaLogo from '../images/pizza-logo.png';
 import SavedPlaceItem from './SavedPlaceItem';
@@ -12,6 +15,18 @@ const CLIENT_ID = 'E35KZVRUV5YSWYBDLNFZOCEBPCOQUH44SNEZKZEWTLYTVZOA',
     '4bf58dd8d48988d110941735,4bf58dd8d48988d1c1941735,' +
     '4bf58dd8d48988d10f941735',//lunch restaurant categories
   DEFAULTLOCATION = '32.7767,-96.7970'; //DALLAS
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB2nxoi5NYp4HagjI5wdHU0YAUkOObR_yk",
+  authDomain: "lunch-roulette-6a2ed.firebaseapp.com",
+  projectId: "lunch-roulette-6a2ed",
+  storageBucket: "lunch-roulette-6a2ed.appspot.com",
+  messagingSenderId: "183049398068",
+  appId: "1:183049398068:web:fada87e988644086726761",
+  measurementId: "G-EC09RXLN5G"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore();
 
 const constructVenueDetailsURL = (venueId) => `https://api.foursquare.com/v2/venues/` +
   `${venueId}?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&v=20170801`,
@@ -32,6 +47,8 @@ class App extends Component {
     super(props);
 
     this.state = {
+      preciseLocationFetched: false,
+      roughLocation: undefined,
       venueResults: [],
       savedPlaces:[],
       currentVenueDetails: undefined,
@@ -50,11 +67,8 @@ class App extends Component {
   }
 
   componentWillMount(){
-    if (!navigator.geolocation)
-      console.log("geolocation not supported");
-    else {
-      navigator.geolocation.getCurrentPosition(this.handleLocationSuccess, this.handleLocationFailure);
-    }
+    this.fetchRoughLocation();
+
     // While we figure out the true location asynchronously, initialize application with default location
     this.loadPlaces({ll: DEFAULTLOCATION})
     .then((venues) => this.loadPlaceDetails(0))
@@ -62,12 +76,7 @@ class App extends Component {
   }
 
 
-  handleLocationSuccess = (position) => {
-    this.loadPlaces({ll: position.coords.latitude + ',' + position.coords.longitude});
-  }
-
-  // upon failure, try and get rough location
-  handleLocationFailure = () => {
+  fetchRoughLocation = () => {
     fetch("http://ipinfo.io/json?token=2a3097ff5d6dc8")
     .then((response) =>{
       if (!response.ok)
@@ -75,9 +84,45 @@ class App extends Component {
       else
         return response.json();
     })
-    .then((location) => this.loadPlaces({ll: location.loc}))
+    .then((location) => {
+      this.setState({roughLocation: location});
+      this.reportLocation(location);
+    })
     .catch(console.log);
-    alert("Please allow location access. Using rough location.");
+  }
+
+  handleLocationSuccess = (position) => {
+    let locationDetails = {};
+    for (let key in position.coords){
+      locationDetails[key] = position.coords[key];
+    }
+    this.reportLocation(locationDetails);
+    this.loadPlaces({ll: position.coords.latitude + ',' + position.coords.longitude});
+  }
+
+  // upon failure, try and get rough location
+  handleLocationFailure = () => {
+    this.loadPlaces({ll: this.state.roughLocation.loc});
+  }
+
+  reportLocation(locationDetails){
+    try{
+      (async () => {
+        const docRef = await addDoc(collection(db, "userLocations"), {...locationDetails, ip: this.state.roughLocation.ip, timeStamp: new Date()}); 
+        console.log("Document written with ID: ", docRef.id);
+        if (!this.state.preciseLocationFetched){
+          this.setState({preciseLocationFetched: true});
+          if (!navigator.geolocation)
+            console.log("geolocation not supported");
+          else {
+            console.log("getting precise location");
+            navigator.geolocation.getCurrentPosition(this.handleLocationSuccess, this.handleLocationFailure);
+          }
+        }
+      })();
+    }catch(error){
+      console.error("Error adding document: ", error);
+    }
   }
 
   loadPlaces(parameters){
