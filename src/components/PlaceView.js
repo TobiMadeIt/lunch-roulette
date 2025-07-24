@@ -79,7 +79,7 @@ PlaceView.propTypes = {
 };
 
 PlaceView.defaultProps = {
-  gettingNextPlace: 'false',
+  gettingNextPlace: false,
   getNextPlace: noop,
   handleLunchClick: noop,
 };
