@@ -120,9 +120,12 @@ class App extends Component {
       const venue = response.response.venue,
         name = venue.name,
         imageSize = 'height500';
-      let photoURL, category, priceTier, tip, distance, coordinates;
+      let id, photoURL, category, priceTier, tip, distance, coordinates;
 
       // Catch exception in case JSON does not contain required data
+      try {id = venue.id;}
+      catch(e){id = nextVenue;}
+
       try {photoURL = venue.bestPhoto.prefix + imageSize + venue.bestPhoto.suffix;}
       catch(e){photoURL = undefined;}
 
@@ -149,6 +152,7 @@ class App extends Component {
         gettingNextPlace: false,
         currentVenue: nextVenue,
         currentVenueDetails: {
+          id,
           name,
           photoURL,
           category,
@@ -172,12 +176,12 @@ class App extends Component {
   }
 
   handleLunchClick(){
-    const {id, name, photoURL} = this.state.currentVenueDetails;
+    const {id, name, photoURL, coordinates} = this.state.currentVenueDetails;
     this.setState({
-      savedPlaces: [...this.state.savedPlaces, {id, name, photoURL}],
+      savedPlaces: [...this.state.savedPlaces, {id, name, photoURL, coordinates}],
     });
     window.open('https://www.google.com/maps/dir/?api=1&destination=' +
-      this.state.currentVenueDetails.coordinates, '_blank'
+      coordinates, '_blank'
     );
   }
 
@@ -200,7 +204,7 @@ class App extends Component {
                 {
                   this.state.savedPlaces.map((place) => (
                     <SavedPlaceItem key={place.id} name={place.name}
-                      photoURL={place.photoURL} />
+                      photoURL={place.photoURL} coordinates={place.coordinates} />
                   ))
                 }
               </Item.Group>
