@@ -63,7 +63,8 @@ class App extends Component {
 
 
   handleLocationSuccess = (position) => {
-    this.loadPlaces({ll: position.coords.latitude + ',' + position.coords.longitude});
+    this.loadPlaces({ll: position.coords.latitude + ',' + position.coords.longitude})
+      .then(() => this.loadPlaceDetails(0));
   }
 
   // upon failure, try and get rough location
@@ -76,6 +77,7 @@ class App extends Component {
         return response.json();
     })
     .then((location) => this.loadPlaces({ll: location.loc}))
+    .then(() => this.loadPlaceDetails(0))
     .catch(console.log);
     alert("Please allow location access. Using rough location.");
   }
